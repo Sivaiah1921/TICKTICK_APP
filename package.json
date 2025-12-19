@@ -1,0 +1,48 @@
+{
+    "name": "tv-tata-play",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "crypto-js": "^4.1.1",
+        "dotenv": "^16.3.1",
+        "env-cmd": "^10.1.0",
+        "jsdom": "^22.1.0",
+        "ncp": "^2.0.0"
+    },
+    "scripts": {
+        "build:dev:lg": "node src/script/build.js lg && npm run prepareLGBuild:dev && npm run format && npm run package:lg",
+        "build:stage:lg": "node src/script/build.js lg && npm run prepareLGBuild:stage  && npm run format && npm run package:lg",
+        "build:prod:lg": "node src/script/build.js lg && npm run prepareLGBuild:prod  && npm run format && npm run package:lg",
+        "build:dev:samsung": "npm run prepareSamsungBuild:dev && npm run format && npm run package:samsung",
+        "build:dev:samsung:tizen8": "npm run prepareSamsungBuild:dev && npm run format && npm run package:samsung:tizen8",
+        "build:stage:samsung": "npm run prepareSamsungBuild:stage && npm run format && npm run package:samsung",
+        "build:stage:samsung:tizen8": "npm run prepareSamsungBuild:stage && npm run format && npm run package:samsung:tizen8",
+        "build:prod:samsung": "npm run prepareSamsungBuild:prod && npm run format && npm run package:samsung:prod",
+        "build:prod:samsung:tizen8": "npm run prepareSamsungBuild:prod && npm run format && npm run package:samsung:tizen8",
+        "prepareLGBuild:dev": "env-cmd -f .env.development node src/script/generate.js lg",
+        "prepareLGBuild:stage": "env-cmd -f .env.stage node src/script/generate.js lg",
+        "prepareLGBuild:prod": "env-cmd -f .env.production node src/script/generate.js lg",
+        "prepareSamsungBuild:dev": "env-cmd -f .env.development node src/script/prepareConfig.js && env-cmd -f .env.development node src/script/build.js samsung && env-cmd -f .env.development node src/script/generate.js samsung",
+        "prepareSamsungBuild:stage": "env-cmd -f .env.stage node src/script/prepareConfig.js && env-cmd -f .env.stage node src/script/build.js samsung && env-cmd -f .env.stage node src/script/generate.js samsung",
+        "prepareSamsungBuild:prod": "env-cmd -f .env.production node src/script/prepareConfig.js && env-cmd -f .env.production node src/script/build.js samsung && env-cmd -f .env.production node src/script/generate.js samsung",
+        "lint": "eslint --ext .js ./src --debug --cache --fix",
+        "prettier": "npx prettier build --check ",
+        "prettier:fix": "npm run prettier -- --write",
+        "format": "npm run prettier:fix",
+        "build:package:samsung": "C:\\tizen-studio\\tools\\ide\\bin\\tizen.bat build-web -- build -out .package",
+        "generate:package:samsung": "C:\\tizen-studio\\tools\\ide\\bin\\tizen.bat package -t wgt -s SampleDecCertificate -- build/.package",
+        "generate:package:samsung:tizen8": "C:\\tizen-studio\\tools\\ide\\bin\\tizen.bat package -t wgt -s Tizen8 -- build/.package",
+        "generate:package:samsung:prod": "C:\\tizen-studio\\tools\\ide\\bin\\tizen.bat package -t wgt -s TataPlay -- build/.package",
+        "clean:package": "C:\\tizen-studio\\tools\\ide\\bin\\tizen.bat clean -- build/.package",
+        "package:samsung": "npm run clean:package && npm run build:package:samsung && npm run generate:package:samsung",
+        "package:samsung:prod": "npm run clean:package && npm run build:package:samsung && npm run generate:package:samsung:prod",
+        "package:samsung:tizen8": "npm run clean:package && npm run build:package:samsung && npm run generate:package:samsung:tizen8",
+        "package:lg": "npm run clean:package && ares-package -o build/.package build"
+    },
+    "devDependencies": {
+        "eslint": "^8.48.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.28.1",
+        "prettier": "^3.0.3"
+    }
+}
